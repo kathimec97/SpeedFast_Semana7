@@ -10,13 +10,20 @@ package cl.duoc.model;
  * @author Katherine Avila
  */
 public class Repartidor implements Runnable {
+    private int id;
     private String nombre;
     private ZonaDeCarga zonaDeCarga;
 
-    public Repartidor(String nombre, ZonaDeCarga zonaDeCarga) {
+
+    public Repartidor(String nombre, int id, ZonaDeCarga zonaDeCarga ) {
 
         this.nombre = nombre;
+        this.id = id;
         this.zonaDeCarga = zonaDeCarga;
+    }
+
+    public Repartidor(){
+
     }
 
     /**
@@ -45,5 +52,21 @@ public class Repartidor implements Runnable {
             pedidoRetirado.setEstadoPedido(EstadoPedido.ENTREGADO);
             System.out.println("Pedido #" + pedidoRetirado.getId() + " |Estado: " + pedidoRetirado.getEstadoPedido() + " |Entregado por: " +  nombre);
         }
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
