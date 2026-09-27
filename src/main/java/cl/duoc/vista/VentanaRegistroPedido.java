@@ -7,7 +7,9 @@ import cl.duoc.model.TipoPedido;
 import cl.duoc.model.ZonaDeCarga;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.List;
 
 public class VentanaRegistroPedido extends JFrame {
     private Pedido pedido;
@@ -16,14 +18,20 @@ public class VentanaRegistroPedido extends JFrame {
     private JTextField txtDireccion;
     private JComboBox comboTipo;
     private JButton btnGuardar;
+    private JTable tblPedido;
+    private DefaultTableModel modeloPedido;
+    private JButton btnActualizar;
 
     public VentanaRegistroPedido() {
 
         this.setTitle("Registro de pedidos");
-        setSize(350, 250);
+        setSize(500, 450);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
         setLocationRelativeTo(null);
+
+        setLayout(new BorderLayout());
+
         JPanel panelRegistro = new JPanel(new GridLayout(3, 2, 10, 10));
         panelRegistro.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
@@ -48,7 +56,28 @@ public class VentanaRegistroPedido extends JFrame {
             guardarPedido();
         });
 
-        setContentPane(panelRegistro);
+        add(panelRegistro, BorderLayout.NORTH);
+
+        String[] columnas = {"Id", "Dirección", "Tipo", "Estado"};
+        modeloPedido = new DefaultTableModel(columnas, 0);
+        tblPedido = new JTable(modeloPedido);
+
+        JScrollPane scroll = new JScrollPane(tblPedido);
+        scroll.setBorder(BorderFactory.createTitledBorder("Pedidos Registrados"));
+
+
+        add(scroll, BorderLayout.CENTER);
+
+        btnActualizar = new JButton("Actualizar");
+        JPanel panelActualizar = new JPanel();
+        panelActualizar.add(btnActualizar);
+
+        btnActualizar.addActionListener(e -> {
+            actualizarTabla();
+        });
+        add(panelActualizar, BorderLayout.SOUTH);
+
+        actualizarTabla();
 
         setVisible(true);
 
@@ -83,11 +112,31 @@ public class VentanaRegistroPedido extends JFrame {
         }
     }
 
+    private void actualizarTabla() {
+        modeloPedido.setRowCount(0);
+
+        try{
+            PedidoDAO dao = new PedidoDAO();
+
+            List<Pedido> lista = dao.listarTodos();
+
+            for (Pedido pedido : lista) {
+
+                modeloPedido.addRow(new Object[]{pedido.getId(), pedido.getDireccionEntrega(), pedido.getTipoPedido(), pedido.getEstadoPedido()});
+
+            }
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al actualizar la tabla: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(() -> {
             new VentanaRegistroPedido().setVisible(true);
         });
     }
+
+
 
 
 }

@@ -1,6 +1,8 @@
 package cl.duoc.dao;
 
+import cl.duoc.model.EstadoPedido;
 import cl.duoc.model.Pedido;
+import cl.duoc.model.TipoPedido;
 
 import javax.swing.*;
 import java.sql.Connection;
@@ -55,6 +57,28 @@ public class PedidoDAO {
             e.printStackTrace();
             }
             return pendientes;
+        }
+
+        public List<Pedido> listarTodos() throws SQLException {
+            ArrayList<Pedido> pedidos = new ArrayList<>();
+
+            String sql = "SELECT * FROM pedido";
+            try (Connection conn = ConexionDB.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Pedido p = new Pedido();
+                    p.setId(rs.getInt("Id"));
+                    p.setDireccionEntrega(rs.getString("direccion"));
+                    p.setTipoPedido(TipoPedido.valueOf(rs.getString("tipo")));
+                    p.setEstadoPedido(EstadoPedido.valueOf(rs.getString("estado")));
+                    pedidos.add(p);
+
+                }
+            }catch(SQLException e) {
+                e.printStackTrace();
+            }
+            return pedidos;
         }
 
 
