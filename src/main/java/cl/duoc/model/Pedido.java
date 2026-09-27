@@ -17,6 +17,11 @@ public class Pedido {
         this.tipoPedido = tipoPedido;
     }
 
+    //Constructor vacío para usar en VentanaEntrega
+    public Pedido(){
+
+    }
+
     public int getId() {
         return id;
     }
