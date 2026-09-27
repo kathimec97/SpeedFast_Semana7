@@ -37,6 +37,21 @@ public class RepartidorDAO {
         return listaRepartidores;
     }
 
+    public void guardarRepartidor(Repartidor repartidor) {
+        String sql = "INSERT INTO repartidor (nombre) VALUES (?)";
+
+        try (Connection conn = ConexionDB.getConnection();
+             PreparedStatement statement = conn.prepareStatement(sql)) {
+
+            statement.setString(1, repartidor.getNombre());
+
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 }
-
-
