@@ -4,13 +4,20 @@ import cl.duoc.dao.PedidoDAO;
 import cl.duoc.model.EstadoPedido;
 import cl.duoc.model.Pedido;
 import cl.duoc.model.TipoPedido;
-import cl.duoc.model.ZonaDeCarga;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Clase que modela la interfaz gráfica de los pedidos:
+ *
+ * Genera una ventana con un campo para escribir una dirección, seleccionar en una lista desplegable
+ * un tipo de pedido con un botón guardar para registrar los pedidos. Además, contiene una tabla para visualizar los pedidos
+ * registrados con el estado en el cual se encuentran ya sea PENDIENTE o ENTREGADO.
+ * @author Katherine
+ */
 public class VentanaRegistroPedido extends JFrame {
     private Pedido pedido;
     private JLabel lblDireccion;
@@ -83,6 +90,10 @@ public class VentanaRegistroPedido extends JFrame {
 
     }
 
+    /**
+     * Obtiene la direccion ingresada y el tipo de pedido y verifica que el campo 'direccion' no esté vacío.
+     * Genera un objeto pedido y lo envía a la base de datos.
+     */
     public void guardarPedido() {
         String direccion = txtDireccion.getText().trim();
         TipoPedido tipo = (TipoPedido) comboTipo.getSelectedItem();
@@ -112,6 +123,9 @@ public class VentanaRegistroPedido extends JFrame {
         }
     }
 
+    /**
+     * Actualiza la vista de la tabla de pedidos en la ventana
+     */
     private void actualizarTabla() {
         modeloPedido.setRowCount(0);
 
@@ -129,14 +143,5 @@ public class VentanaRegistroPedido extends JFrame {
             JOptionPane.showMessageDialog(this, "Error al actualizar la tabla: " + e.getMessage());
         }
     }
-
-    public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            new VentanaRegistroPedido().setVisible(true);
-        });
-    }
-
-
-
 
 }

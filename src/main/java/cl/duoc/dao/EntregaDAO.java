@@ -9,9 +9,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Clase encargada de manejar la base de datos para las entregas
+ *
+ * Permite guardar nuevas entregas con su repartidor, fecha y hora
+ * @author Katherine
+ */
 public class EntregaDAO {
 
+    /**
+     * Guarda nuevas entregas, específicamente el ID del pedido, el ID del repartidor,
+     * la fecha y la hora de entrega.
+     * Actualiza la tabla Pedido para que al guardar una entrega el pedido "entregado" pase de estado PENDIENTE
+     * a ENTREGADO.
+     *
+     * @param entrega el objeto que se crea a partir de los datos de laa diferentes tablas.
+     * @throws Exception en caso de un error con la base de datos
+     */
     public void guardar(Entrega entrega) throws Exception {
         String sql = "INSERT INTO entrega (id_pedido, id_repartidor, fecha, hora) VALUES (?,?,?,?)";
 
@@ -33,18 +47,23 @@ public class EntregaDAO {
 
             try (PreparedStatement stmtUpdate = conn.prepareStatement(sqlUpdate)) {
                 stmtUpdate.setInt(1, entrega.getPedido().getId());
-               int fila =  stmtUpdate.executeUpdate();
+                int fila = stmtUpdate.executeUpdate();
 
-               if(fila == 0){
-                   throw new Exception("El pedido ID " + entrega.getPedido().getId() + " no existe en la tabla o la columna de ID es incorrecta.");
-               }
+                if (fila == 0) {
+                    throw new Exception("El pedido ID " + entrega.getPedido().getId() + " no existe en la tabla o la columna de ID es incorrecta.");
+                }
             }
 
         }
 
-        }
+    }
 
 
+    /**
+     * Lista todas las entregas de la base de datos
+     *
+     * @return una lista general de entregas
+     */
 
     public List<Entrega> listarTodas() {
         ArrayList<Entrega> lista = new ArrayList<>();

@@ -8,6 +8,13 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Clase que modela la interfaz gráfica de los repartidores:
+ * <p>
+ * Entrega una ventana con un campo para escribir el nombre del repartidor y un botón registrar,
+ * adicionalmente muestra una tabla con la lista de los repartidores registrados,
+ * cuenta con un botón actualizar para refrescar la tabla.
+ */
 public class VentanaRegistrarRepartidor extends JFrame {
 
     private JLabel lblNombreRepartidor;
@@ -30,11 +37,10 @@ public class VentanaRegistrarRepartidor extends JFrame {
 
         JPanel panelRegistroRepartidor = new JPanel(new GridLayout(2, 2, 10, 10));
         panelRegistroRepartidor.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        JPanel panelActualizar = new  JPanel();
+        JPanel panelActualizar = new JPanel();
 
 
-
-        JLabel lblNombreRepartidor = new JLabel("Nombre Repartidor:");
+        lblNombreRepartidor = new JLabel("Nombre Repartidor:");
         txtNombreRepartidor = new JTextField();
         btnRegistrarRepartidor = new JButton("Registrar");
         btnActualizar = new JButton("Actualizar");
@@ -52,13 +58,13 @@ public class VentanaRegistrarRepartidor extends JFrame {
         );
 
         btnRegistrarRepartidor.addActionListener(e -> {
-                guardarRepartidor();
+            guardarRepartidor();
         });
 
         add(panelRegistroRepartidor, BorderLayout.NORTH);
         add(panelActualizar, BorderLayout.SOUTH);
 
-        String[]columnas = {"Id", "Nombre"};
+        String[] columnas = {"Id", "Nombre"};
         modeloRepartidores = new DefaultTableModel(columnas, 0);
         tblRepartidores = new JTable(modeloRepartidores);
 
@@ -72,35 +78,43 @@ public class VentanaRegistrarRepartidor extends JFrame {
         setVisible(true);
     }
 
-        public void guardarRepartidor() {
-            String nombreR = txtNombreRepartidor.getText().trim();
+    /**
+     * Obtiene el nombre del repartidor a registrar y crea un objeto repartidor para guardar en la base de datos.
+     *
+     */
+    public void guardarRepartidor() {
+        String nombreR = txtNombreRepartidor.getText().trim();
 
 
-            if (nombreR.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Por favor, complete el campo Nombre Repartidor");
-                return;
+        if (nombreR.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete el campo Nombre Repartidor");
+            return;
 
-            }
-
-
-            Repartidor nuevo = new Repartidor();
-            nuevo.setNombre(nombreR);
-
-            try {
-                RepartidorDAO dao = new RepartidorDAO();
-                dao.guardarRepartidor(nuevo);
+        }
 
 
-                JOptionPane.showMessageDialog(this, "Repartidor agregado correctamente");
+        Repartidor nuevo = new Repartidor();
+        nuevo.setNombre(nombreR);
 
-                txtNombreRepartidor.setText("");
+        try {
+            RepartidorDAO dao = new RepartidorDAO();
+            dao.guardarRepartidor(nuevo);
 
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos:" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
+
+            JOptionPane.showMessageDialog(this, "Repartidor agregado correctamente");
+
+            txtNombreRepartidor.setText("");
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al guardar en la base de datos:" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
 
 
     }
+
+    /**
+     * Actualiza la vista de la tabla de repartidores en la ventana.
+     */
     private void actualizarTabla() {
         modeloRepartidores.setRowCount(0);
 
@@ -117,9 +131,4 @@ public class VentanaRegistrarRepartidor extends JFrame {
         }
     }
 
-        public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            new VentanaRegistrarRepartidor().setVisible(true);
-        });
-    }
 }

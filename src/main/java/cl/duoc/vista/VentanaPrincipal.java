@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 /**
  * Clase que modela la interfaz gráfica de la Ventana Principal del Sistema:
- *
+ * <p>
  * Contiene tres botones que permiten gestionar cada parte del sistema Speedfast:
  * Pedidos: abre la 'VentanaRegistroPedidos.java'
  * Repartidores: abre la 'VentanaRegistrarRepartidores.java'
@@ -40,7 +40,7 @@ public class VentanaPrincipal extends JFrame {
         add(panelBotones, BorderLayout.CENTER);
 
         botonPedidos.addActionListener(e -> {
-           VentanaRegistroPedido registroP = new VentanaRegistroPedido();
+            VentanaRegistroPedido registroP = new VentanaRegistroPedido();
             registroP.setVisible(true);
         });
 
@@ -48,7 +48,6 @@ public class VentanaPrincipal extends JFrame {
             VentanaRegistrarRepartidor RegistrarR = new VentanaRegistrarRepartidor();
             RegistrarR.setVisible(true);
         });
-
 
 
         botonEntregas.addActionListener(e -> {
@@ -63,12 +62,5 @@ public class VentanaPrincipal extends JFrame {
 
 
     }
-    public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            new VentanaPrincipal().setVisible(true);
-        });
-    }
-
-
 
 }

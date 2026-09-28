@@ -1,7 +1,8 @@
 package cl.duoc.model;
 
 /**
- * Representa un pedido a despachar dentro del sistema SpeedFast.
+ * Representa un pedido a registrar dentro del sistema SpeedFast.
+ *
  * @author Katherine
  */
 public class Pedido {
@@ -10,7 +11,7 @@ public class Pedido {
     private EstadoPedido estadoPedido;
     private TipoPedido tipoPedido;
 
-    public Pedido( int id, String direccionEntrega, EstadoPedido estadoPedido, TipoPedido tipoPedido ) {
+    public Pedido(int id, String direccionEntrega, EstadoPedido estadoPedido, TipoPedido tipoPedido) {
         this.direccionEntrega = direccionEntrega;
         this.id = id;
         this.estadoPedido = EstadoPedido.PENDIENTE;
@@ -18,7 +19,7 @@ public class Pedido {
     }
 
     //Constructor vacío para usar en VentanaEntrega
-    public Pedido(){
+    public Pedido() {
 
     }
 
@@ -56,6 +57,7 @@ public class Pedido {
 
     /**
      * Actualiza el estado del pedido a partir de una cadena de texto.
+     *
      * @param nuevoEstado
      */
     public void setEstadoPedido(String nuevoEstado) {
@@ -66,8 +68,8 @@ public class Pedido {
     public String toString() {
         return
                 " \n #" + id + '\n' +
-                " Dirección de Entrega: " + direccionEntrega + '\n' +
-                " Estado del Pedido: " + estadoPedido;
+                        " Dirección de Entrega: " + direccionEntrega + '\n' +
+                        " Estado del Pedido: " + estadoPedido;
     }
 }
 

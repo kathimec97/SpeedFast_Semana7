@@ -14,11 +14,19 @@ import java.util.List;
 
 /**
  * Data Access Object para la entidad Pedido.
- * Encargada de guardar los nuevos pedidos en la base de datos.
+ * Encargada de guardar los nuevos pedidos en la base de datos, listar todos los pedidos
+ * o listar solo los pedidos pendientes para entregar.
+ *
+ * @author Katherine
  *
  */
 public class PedidoDAO {
 
+    /**
+     * Guarda un nuevo pedido en la base de datos
+     *
+     * @param pedido El objeto con los datos del pedido y el repartidor.
+     */
     public void guardar(Pedido pedido) {
 
         String sql = "INSERT INTO pedido(direccion, tipo, estado) VALUES (?, ?, ?)";
@@ -31,12 +39,19 @@ public class PedidoDAO {
 
             stmt.executeUpdate();
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
 
         }
     }
 
+
+    /**
+     * Lista los pedidos con estado PENDIENTE de envío
+     *
+     * @return una lista Pedido pendiente para su selección y envío
+     * @throws SQLException si ocurre un error con la base de datos
+     */
     public List<Pedido> listarPendientes() throws SQLException {
         List<Pedido> pendientes = new ArrayList<>();
 
@@ -44,42 +59,48 @@ public class PedidoDAO {
 
         try (Connection conn = ConexionDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery()) {
+             ResultSet rs = stmt.executeQuery()) {
 
-    while (rs.next()) {
-        Pedido p = new Pedido();
-        p.setId(rs.getInt("Id"));
-        p.setDireccionEntrega(rs.getString("direccion"));
+            while (rs.next()) {
+                Pedido p = new Pedido();
+                p.setId(rs.getInt("Id"));
+                p.setDireccionEntrega(rs.getString("direccion"));
 
-        pendientes.add(p);
-    }
-            }catch(SQLException e) {
+                pendientes.add(p);
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
-            }
-            return pendientes;
         }
+        return pendientes;
+    }
 
-        public List<Pedido> listarTodos() throws SQLException {
-            ArrayList<Pedido> pedidos = new ArrayList<>();
+    /**
+     * Lista todos los pedidos en la base de datos
+     *
+     * @return una lista general de pedidos registrados
+     * @throws SQLException
+     */
+    public List<Pedido> listarTodos() throws SQLException {
+        ArrayList<Pedido> pedidos = new ArrayList<>();
 
-            String sql = "SELECT * FROM pedido";
-            try (Connection conn = ConexionDB.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    Pedido p = new Pedido();
-                    p.setId(rs.getInt("Id"));
-                    p.setDireccionEntrega(rs.getString("direccion"));
-                    p.setTipoPedido(TipoPedido.valueOf(rs.getString("tipo")));
-                    p.setEstadoPedido(EstadoPedido.valueOf(rs.getString("estado")));
-                    pedidos.add(p);
+        String sql = "SELECT * FROM pedido";
+        try (Connection conn = ConexionDB.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Pedido p = new Pedido();
+                p.setId(rs.getInt("Id"));
+                p.setDireccionEntrega(rs.getString("direccion"));
+                p.setTipoPedido(TipoPedido.valueOf(rs.getString("tipo")));
+                p.setEstadoPedido(EstadoPedido.valueOf(rs.getString("estado")));
+                pedidos.add(p);
 
-                }
-            }catch(SQLException e) {
-                e.printStackTrace();
             }
-            return pedidos;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return pedidos;
+    }
 
 
 }

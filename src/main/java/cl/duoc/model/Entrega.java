@@ -3,6 +3,14 @@ package cl.duoc.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/**
+ * Modelo que representa una entrega en el sistema SpeedFast.
+ * <p>
+ * Es el registro de la relación entre un Pedido especifico con el repartidor que hizo la entrega.
+ * Además de la fecha y la hora exacta en la que ocurrió la entrega.
+ *
+ * @author Katherine
+ */
 public class Entrega {
     private int idEntrega;
     private Pedido pedido;

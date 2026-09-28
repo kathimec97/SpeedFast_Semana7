@@ -15,12 +15,23 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * Clase que modela la interfaz gráfica para las entregas:
+ * <p>
+ * Entrega una ventana con la opción de seleccionar un pedido de una lista desplegable de Pendientes y
+ * un repartidor que tiene su propia lista desplegable. Al seleccionar el boton 'simular Envío' se registra
+ * la entrega en la base de datos.
+ * Adicionalmente, cuenta con un boton para actualizar la tabla
+ * que estamos viendo en la interfaz y un boton para cerrar la ventana.
+ *
+ * @author Katherine
+ */
 public class VentanaEntrega extends JFrame {
-    private JLabel lblPedido;
-    private JLabel lblRepartidor;
-    private JComboBox<String> comboPedidos;
-    private JComboBox<String> comboRepartidores;
-    private JButton botonAsignar;
+    private  JLabel lblPedido;
+    private  JLabel lblRepartidor;
+    private  JComboBox<String> comboPedidos;
+    private  JComboBox<String> comboRepartidores;
+    private  JButton botonAsignar;
 
     private JTable tablaEntregas;
     private DefaultTableModel modeloEntregas;
@@ -46,7 +57,7 @@ public class VentanaEntrega extends JFrame {
         lblRepartidor = new JLabel("Repartidor:");
         comboRepartidores = new JComboBox<>();
 
-        botonAsignar = new JButton("Simular Envío");
+        botonAsignar = new JButton("simular Envío");
 
         cargarPedidosPendientes();
         cargarRepartidores();
@@ -97,6 +108,11 @@ public class VentanaEntrega extends JFrame {
 
     }
 
+    /**
+     * Permite visualizar y seleccionar los pedidos pendientes mediante una lista desplegable.
+     *
+     * @throws SQLException
+     */
     private void cargarPedidosPendientes() throws SQLException {
         comboPedidos.removeAllItems();
         PedidoDAO dao = new PedidoDAO();
@@ -107,6 +123,9 @@ public class VentanaEntrega extends JFrame {
 
     }
 
+    /**
+     * Permite visualizar y seleccionar los repartidores guardados mediante una lista desplegable.
+     */
     private void cargarRepartidores() {
         comboRepartidores.removeAllItems();
         RepartidorDAO dao = new RepartidorDAO();
@@ -116,6 +135,9 @@ public class VentanaEntrega extends JFrame {
         }
     }
 
+    /**
+     * Verifica que se seleccione un pedido y un repartidor y genera un objeto entrega para guardar.
+     */
     private void asignarEntrega() {
         if (comboPedidos.getSelectedItem() == null || comboRepartidores.getSelectedItem() == null) {
             JOptionPane.showMessageDialog(this, " No hay Pedidos o repartidores disponibles.");
@@ -153,6 +175,9 @@ public class VentanaEntrega extends JFrame {
         }
     }
 
+    /**
+     * Actualiza visualmente la tabla con el historial de entregas.
+     */
     private void actualizarTabla() {
         modeloEntregas.setRowCount(0);
 
@@ -177,5 +202,5 @@ public class VentanaEntrega extends JFrame {
     }
 
 
-    }
+}
 
