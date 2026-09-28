@@ -1,18 +1,23 @@
 package cl.duoc.vista;
 
 
-import cl.duoc.model.Repartidor;
-import cl.duoc.model.ZonaDeCarga;
-
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
+/**
+ * Clase que modela la interfaz gráfica de la Ventana Principal del Sistema:
+ *
+ * Contiene tres botones que permiten gestionar cada parte del sistema Speedfast:
+ * Pedidos: abre la 'VentanaRegistroPedidos.java'
+ * Repartidores: abre la 'VentanaRegistrarRepartidores.java'
+ * Entregas: abre la 'VentanaEntrega.java'
+ */
 public class VentanaPrincipal extends JFrame {
 
-    private JButton botonRegistrarPedido;
-    private JButton botonListaPedidos;
-    private JButton botonAsignarRepartidor;
-    private final ZonaDeCarga zonaDeCarga = new ZonaDeCarga();
+    private JButton botonPedidos;
+    private JButton botonRepartidores;
+    private JButton botonEntregas;
 
     public VentanaPrincipal() {
         setTitle("Ventana Principal-SpeedFast");
@@ -23,46 +28,37 @@ public class VentanaPrincipal extends JFrame {
         JPanel panelBotones = new JPanel(new GridLayout(3, 1, 0, 15));
         panelBotones.setBorder(BorderFactory.createEmptyBorder(40, 50, 40, 50));
 
-        botonRegistrarPedido = new JButton("Registrar pedido");
-        botonListaPedidos = new JButton("Lista de pedidos");
-        botonAsignarRepartidor = new JButton("Asignar repartidor/Iniciar Reparto");
+        botonPedidos = new JButton("Pedidos");
+        botonRepartidores = new JButton("Repartidores");
+        botonEntregas = new JButton("Entregas");
 
-        panelBotones.add(botonRegistrarPedido);
-        panelBotones.add(botonListaPedidos);
-        panelBotones.add(botonAsignarRepartidor);
+        panelBotones.add(botonPedidos);
+        panelBotones.add(botonRepartidores);
+        panelBotones.add(botonEntregas);
         setVisible(true);
 
         add(panelBotones, BorderLayout.CENTER);
 
-        botonRegistrarPedido.addActionListener(e -> {
-            VentanaRegistroPedido registro = new VentanaRegistroPedido(this.zonaDeCarga);
-            registro.setVisible(true);
+        botonPedidos.addActionListener(e -> {
+           VentanaRegistroPedido registroP = new VentanaRegistroPedido();
+            registroP.setVisible(true);
         });
 
-        botonListaPedidos.addActionListener(e -> {
-          VentanaListaPedidos listado = new VentanaListaPedidos(this.zonaDeCarga);
-         listado.setVisible(true);
+        botonRepartidores.addActionListener(e -> {
+            VentanaRegistrarRepartidor RegistrarR = new VentanaRegistrarRepartidor();
+            RegistrarR.setVisible(true);
         });
 
-        botonAsignarRepartidor.addActionListener(e -> {
-            if(zonaDeCarga.getPedidosPendientes().isEmpty()){
-                JOptionPane.showMessageDialog(this, "No hay Pedidos Pendientes para despachar",
-                        "Sin Pedidos",
-                        JOptionPane.WARNING_MESSAGE);
-                        return;
+
+
+        botonEntregas.addActionListener(e -> {
+            VentanaEntrega entrega = null;
+            try {
+                entrega = new VentanaEntrega();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
             }
-            Thread repartidor1 = new Thread(new Repartidor("PatrickJ", zonaDeCarga), "PatrickJ");
-            Thread repartidor2 = new Thread(new Repartidor("JeanL", zonaDeCarga), "JeanL");
-            Thread repartidor3 = new Thread(new Repartidor("ChandlerB", zonaDeCarga), "ChandlerB");
-            Thread repartidor4 = new Thread(new Repartidor("AtticusF", zonaDeCarga), "AtticusF");
-
-            repartidor1.start();
-            repartidor2.start();
-            repartidor3.start();
-            repartidor4.start();
-
-            JOptionPane.showMessageDialog(this, "¡Reparto iniciado con exito!" + "\n" + "Reparto en curso...");
-
+            entrega.setVisible(true);
         });
 
 
